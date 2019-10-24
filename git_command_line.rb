@@ -1,6 +1,3 @@
-require 'pry-rails'
-require 'open3'
-
 class GitCommandLine
   def initialize(url, repo_name)
     @url = url

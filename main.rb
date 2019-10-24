@@ -1,8 +1,3 @@
-require 'uri'
-require 'pry-rails'
-require './github_url_processor.rb'
-require './git_command_line.rb'
-
 def url_reader
   raise "Wrong number of arguments" if ARGV.length != 1
 
