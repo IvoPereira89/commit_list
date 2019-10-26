@@ -10,11 +10,19 @@ module Github
     end
 
     def repository
-      @repository ||= client.repo("#{@owner}/#{@repository_name}")
+      begin
+        @repository ||= client.repo("#{@owner}/#{@repository_name}")
+      rescue => exception
+        raise exception
+      end
     end
 
     def fetch_commits
-      client.commits(repository[:id])
+      begin
+        client.commits(repository[:id])
+      rescue => exception
+        raise exception
+      end
     end
   end
 end

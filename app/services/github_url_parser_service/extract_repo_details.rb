@@ -1,8 +1,12 @@
-class GithubUrlParserService::ExtractRepoDetails
-  def self.call(url)
+class GithubUrlParserService::ExtractRepoDetails < ApplicationService
+  def initialize(url)
+    @url = url
+  end
+
+  def call
     begin
-      raise "invalid github url" unless validate(url)
-      url_parts = url.split('/')
+      raise "Invalid github url" unless validate
+      url_parts = @url.split('/')
       {
         name: url_parts[-1],
         owner: url_parts[-2]
@@ -12,7 +16,9 @@ class GithubUrlParserService::ExtractRepoDetails
     end
   end
 
-  def self.validate(url)
-    url.match(/^https:\/\/(www.)?github.com\/(\S)+\/(\S)+/)
+  private
+
+  def validate
+    @url.match(/^https:\/\/(www.)?github.com\/(\S)+\/(\S)+/)
   end
 end
