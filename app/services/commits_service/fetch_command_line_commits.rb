@@ -53,6 +53,7 @@ class CommitsService::FetchCommandLineCommits < ApplicationService
       end
     end
 
+    commits.push(Commit.new(commit)) if commit.key?(:commit_id)
     commits
   end
 
