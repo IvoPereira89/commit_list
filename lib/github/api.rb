@@ -11,7 +11,7 @@ module Github
 
     def repository
       begin
-        @repository ||= x("#{@owner}/#{@repository_name}")
+        @repository ||= client.repo("#{@owner}/#{@repository_name}")
       rescue => exception
         raise exception
       end
