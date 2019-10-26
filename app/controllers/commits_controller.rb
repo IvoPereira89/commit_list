@@ -1,6 +1,6 @@
 class CommitsController < ApplicationController
   def index
-    render json: { error: "Missing url parameter" } and return unless params.key?(:url)
+    render json: { error: "Missing url parameter" }, status: :bad_request and return unless params.key?(:url)
 
     begin
       details = GithubUrlParserService::ExtractRepoDetails.call(params[:url])
@@ -11,11 +11,10 @@ class CommitsController < ApplicationController
     begin
       result = CommitsService::FetchGithubCommits.call(details)
     rescue => exception
-      puts exception
       result = CommitsService::FetchCommandLineCommits.call(details.merge(url: params[:url]))
     end
 
-    render json: { error: result } and return unless result.kind_of?(Array)
+    render json: { error: result[:error] }, status: result[:status] and return unless result.kind_of?(Array)
 
     page = params[:page] || 0
     page_size = params[:page_size] || 25
