@@ -25,7 +25,7 @@ The app should now be available on port `3000`
 ## Run tests
 
 From inside the project directory: 
-* Run `rpsec spec/` - this will run all tests
+* Run `rspec spec/` - this will run all tests
 
 If you need to run a specific test file do 
-* Run `rpsec {FILE_PATH}`
+* Run `rspec {FILE_PATH}`
