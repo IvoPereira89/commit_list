@@ -5,7 +5,7 @@ class CommitsController < ApplicationController
     begin
       details = GithubUrlParserService::ExtractRepoDetails.call(params[:url])
     rescue => exception
-       render json: { error: exception } and return unless params.key?(:url)
+       render json: { error: exception } and return
     end
 
     begin

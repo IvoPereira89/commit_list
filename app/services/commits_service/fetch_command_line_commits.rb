@@ -5,27 +5,34 @@ class CommitsService::FetchCommandLineCommits < ApplicationService
   end
 
   def call
-    setup_local
-    commits = commit_list
-    clean_up_local
-    parse(commits)
+    begin
+      setup_local
+      commits = commit_list
+      clean_up_local
+      parse(commits)
+    rescue => exception
+      raise exception
+    end
   end
 
   private
 
   def commit_list
-    output = "cd tmp/#{@repository_name} && git log"
-    output, _, _ = Open3.capture3(output)
-    output
+    run_command("cd tmp/#{@repository_name} && git log")
   end
 
   def setup_local
-    system "cd tmp && git clone #{@url}"
-
+    run_command("cd tmp && git clone #{@url}")
   end
 
   def clean_up_local
-    system "rm -rf tmp/#{@repository_names}"
+    run_command("rm -rf tmp/#{@repository_name}")
+  end
+
+  def run_command(command)
+    output, error, _ = Open3.capture3(command)
+    raise error and return if error
+    output
   end
 
   def parse(raw_commits)
